@@ -37,12 +37,20 @@ If the RC522 is not detected during boot, the device automatically falls back to
 | TX | GP1 |
 | ENABLE | GP10 (via 2N2222) |
 | 5V | VBUS |
-| GND | GND |
+| GND | 2N2222 ->  Collector|
+
+### 2N2222 (Enable RDM6300)
+| Comment | Pin |
+|---------|------|
+| Collector | RDM6300 GND |
+| Base | 10k -> GP10 |
+| Emitter | GND && 100k -> Base (Pulldown) |
 
 ### Buzzer
 | Component | Pin |
 |-----------|-----|
-| Piezo Buzzer | GP16 |
+| Piezo Buzzer + | GP16 |
+| Piezo Buzzer - | GND |
 
 A 2N2222 transistor + 10k base resistor + 100k pull-down should be used to control RDM6300’s enable pin.
 
