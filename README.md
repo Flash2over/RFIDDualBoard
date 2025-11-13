@@ -35,7 +35,6 @@ If the RC522 is not detected during boot, the device automatically falls back to
 | RDM6300 | Pico |
 |---------|------|
 | TX | GP1 |
-| ENABLE | GP10 (via 2N2222) |
 | 5V | VBUS |
 | GND | 2N2222 ->  Collector|
 
