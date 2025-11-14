@@ -3,6 +3,7 @@ import board
 import busio
 import digitalio
 import usb_hid
+import pwmio
 
 from mfrc522 import MFRC522
 from adafruit_hid.keyboard import Keyboard
@@ -15,7 +16,7 @@ DEBUG = False
 # KONFIG
 # =========================
 
-BUZZER_PIN = board.GP16
+BUZZER_PIN = board.GP13
 
 # RDM6300 Pins
 RDM_UART_TX = board.GP0
@@ -29,43 +30,23 @@ PHASE_DURATION_MS = 250  # 0,25s pro Leser
 # BUZZER (Software PWM)
 # =========================
 
-buzzer = digitalio.DigitalInOut(BUZZER_PIN)
-buzzer.direction = digitalio.Direction.OUTPUT
-
-def tone(freq, duration):
-    """Software-PWM Ton"""
-    if freq <= 0:
+def play_beep(freq, duration):
+    try:
+        buzzer = pwmio.PWMOut(BUZZER_PIN, frequency=freq, duty_cycle=32768)
         time.sleep(duration)
-        return
+        buzzer.deinit()
+    except Exception as e:
+        print("Buzzer Error:", e)
 
-    period = 1.0 / freq
-    half = period / 2
-    end_time = time.monotonic() + duration
-
-    while time.monotonic() < end_time:
-        buzzer.value = True
-        time.sleep(half)
-        buzzer.value = False
-        time.sleep(half)
-
-def play_notes(notes):
-    for freq, dur in notes:
-        tone(freq, dur)
-        time.sleep(0.01)
-
+# Unterschiedliche Beeps pro Reader
 def beep_rc522():
-    play_notes([
-        (100, 0.04),
-        (140, 0.04),
-        (180, 0.08)
-    ])
+    play_beep(3000, 0.1)  # RC522 höherer Erfolgston
+    play_beep(2000, 0.1)
+    play_beep(3000, 0.1)
 
 def beep_rdm():
-    play_notes([
-        (200, 0.04),
-        (140, 0.04),
-        (100, 0.08)
-    ])
+    play_beep(2000, 0.1)  # RDM6300 tieferer Erfolgston
+    play_beep(3000, 0.1)
 
 # =========================
 # USB Keyboard
@@ -212,4 +193,3 @@ while True:
         process_rdm(now_ms)
 
     time.sleep(0.01)
-
