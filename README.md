@@ -31,10 +31,10 @@ If the RC522 is not detected during boot, the device automatically falls back to
 | 3.3V | 3V3 |
 | GND | GND |
 
-### RDM6300 (UART)
+### RDM6300 (UART) 
 | RDM6300 | Pico |
 |---------|------|
-| TX | GP1 |
+| TX | 4,7k -> GP1 -> 10k -> GND |
 | 5V | VBUS |
 | GND | 2N2222 ->  Collector|
 
@@ -45,10 +45,12 @@ If the RC522 is not detected during boot, the device automatically falls back to
 | Base | 10k -> GP10 |
 | Emitter | GND & 100k -> Base (Pull-down) |
 
-### Buzzer
+### Buzzer + 2N3906 PNP
 | Component | Pin |
 |-----------|-----|
-| Piezo Buzzer + | GP16 |
+| Emitter | 5V |
+| Base | GP16 |
+| Piezo Buzzer + | Collector |
 | Piezo Buzzer - | GND |
 
 A 2N2222 transistor + 10k base resistor + 100k pull-down are be used to enable RDM6300.
@@ -147,6 +149,12 @@ All modifications and adaptations for:
 - Debounce logic  
 - Timing improvements  
 were made by **Thomas Störzner (Flash2over)**.
+
+---
+
+## ⚠️ Disclaimer
+**USE AT YOUR OWN RISK**  
+This project is provided "as is" without warranty of any kind. The author assumes no responsibility for any damage, loss, or injury that may result from the use of this hardware or software. Users are solely responsible for ensuring proper implementation, safety precautions, and compliance with applicable laws and regulations.
 
 ---
 
