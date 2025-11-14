@@ -4,16 +4,6 @@ import busio
 import digitalio
 import usb_hid
 
-# RC522 RST vorbereiten
-rc522_rst = digitalio.DigitalInOut(board.GP6)
-rc522_rst.direction = digitalio.Direction.OUTPUT
-
-# HARD RESET
-rc522_rst.value = False
-time.sleep(0.1)
-rc522_rst.value = True
-time.sleep(0.1)
-
 from mfrc522 import MFRC522
 from adafruit_hid.keyboard import Keyboard
 from adafruit_hid.keycode import Keycode
@@ -222,3 +212,4 @@ while True:
         process_rdm(now_ms)
 
     time.sleep(0.01)
+
